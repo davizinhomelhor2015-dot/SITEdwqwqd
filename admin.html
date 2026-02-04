@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Balcão para o Cidadão</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Login Screen */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-container h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-header h1 {
+            color: #667eea;
+            font-size: 2em;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .back-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .admin-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .upload-area:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 300px;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-item {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-email {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .comment-text {
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .comment-date {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                text-align: center;
+            }
+
+            .admin-header h1 {
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <h2>🔐 Login Admin</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="login-btn">Entrar</button>
+            <div class="error" id="loginError">Usuário ou senha incorretos!</div>
+        </form>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-header">
+            <h1>⚙️ Painel Administrativo</h1>
+            <div>
+                <a href="index.html" class="back-btn">🏠 Ver Site</a>
+                <button class="logout-btn" onclick="logout()">Sair</button>
+            </div>
+        </div>
+
+        <!-- Hero Section Editor -->
+        <div class="admin-section">
+            <h2>Hero Section</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Logo</label>
+                    <div class="upload-area" onclick="document.getElementById('logoUpload').click()">
+                        <input type="file" id="logoUpload" accept="image/*" onchange="uploadImage('logo', this.files[0])">
+                        <p>📷 Clique para fazer upload da logo</p>
+                    </div>
+                    <img id="logoPreview" class="preview-image" style="display:none;">
+                </div>
+
+                <div class="form-group">
+                    <label for="heroTitle">Título Principal</label>
+                    <input type="text" id="heroTitle">
+                </div>
+
+                <div class="form-group">
+                    <label for="heroSubtitle">Subtítulo</label>
+                    <input type="text" id="heroSubtitle">
+                </div>
+
+                <div class="form-group">
+                    <label for="heroDescription">Descrição</label>
+                    <textarea id="heroDescription"></textarea>
+                </div>
+
+                <button class="save-btn" onclick="saveHeroContent()">💾 Salvar Hero Section</button>
+                <div class="success-message" id="heroSuccess">Salvo com sucesso! ✅</div>
+            </div>
+        </div>
+
+        <!-- Sections Editor -->
+        <div class="admin-section">
+            <h2>Seções de Conteúdo</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="oqueText">O que é</label>
+                    <textarea id="oqueText"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="missaoText">Missão</label>
+                    <textarea id="missaoText"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="objetivoText">Objetivo</label>
+                    <textarea id="objetivoText"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="valoresText">Valores</label>
+                    <textarea id="valoresText"></textarea>
+                </div>
+
+                <button class="save-btn" onclick="saveSectionsContent()">💾 Salvar Seções</button>
+                <div class="success-message" id="sectionsSuccess">Salvo com sucesso! ✅</div>
+            </div>
+        </div>
+
+        <!-- Comments Manager -->
+        <div class="admin-section">
+            <h2>Gerenciar Comentários</h2>
+            <div id="adminCommentsList">
+                <div class="loading">Carregando comentários...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdxd54oFM3eWH1duC5BTdJzjGGRDLMq-Q",
+            authDomain: "mary-cb817.firebaseapp.com",
+            databaseURL: "https://mary-cb817-default-rtdb.firebaseio.com",
+            projectId: "mary-cb817",
+            storageBucket: "mary-cb817.firebasestorage.app",
+            messagingSenderId: "887348832569",
+            appId: "1:887348832569:web:c6d9c32a1a1c402b8960e8",
+            measurementId: "G-86HWEH554E"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // Admin credentials
+        const ADMIN_USER = 'ADM';
+        const ADMIN_PASSWORD = 'BALCÃO2026';
+
+        // Check if already logged in
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            showAdminPanel();
+        }
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (username === ADMIN_USER && password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showAdminPanel();
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        function showAdminPanel() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadAdminContent();
+            loadAdminComments();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            location.reload();
+        }
+
+        // Load content for editing
+        function loadAdminContent() {
+            database.ref('content').once('value', (snapshot) => {
+                const content = snapshot.val() || {};
+                
+                document.getElementById('heroTitle').value = content.heroTitle || 'Balcão para o Cidadão';
+                document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Universidade Católica do Salvador';
+                document.getElementById('heroDescription').value = content.heroDescription || 'Um projeto de extensão universitária dedicado a promover o acesso à justiça e cidadania.';
+                document.getElementById('oqueText').value = content.oque || 'O Balcão para o Cidadão é um projeto de extensão...';
+                document.getElementById('missaoText').value = content.missao || 'Promover o acesso à justiça...';
+                document.getElementById('objetivoText').value = content.objetivo || 'Oferecer assistência jurídica...';
+                document.getElementById('valoresText').value = content.valores || 'Justiça social, ética...';
+                
+                if (content.heroLogo) {
+                    document.getElementById('logoPreview').src = content.heroLogo;
+                    document.getElementById('logoPreview').style.display = 'block';
+                }
+            });
+        }
+
+        // Upload image to Firebase Storage
+        function uploadImage(type, file) {
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('logoPreview').src = e.target.result;
+                document.getElementById('logoPreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            const storageRef = storage.ref('images/' + type + '_' + Date.now() + '_' + file.name);
+            const uploadTask = storageRef.put(file);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload: ' + progress + '%');
+                },
+                (error) => {
+                    alert('Erro no upload: ' + error.message);
+                },
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        database.ref('content/heroLogo').set(downloadURL)
+                            .then(() => {
+                                alert('Logo atualizada com sucesso!');
+                            });
+                    });
+                }
+            );
+        }
+
+        // Save Hero content
+        function saveHeroContent() {
+            const updates = {
+                heroTitle: document.getElementById('heroTitle').value,
+                heroSubtitle: document.getElementById('heroSubtitle').value,
+                heroDescription: document.getElementById('heroDescription').value
+            };
+
+            database.ref('content').update(updates)
+                .then(() => {
+                    const successMsg = document.getElementById('heroSuccess');
+                    successMsg.style.display = 'block';
+                    setTimeout(() => successMsg.style.display = 'none', 3000);
+                })
+                .catch((error) => {
+                    alert('Erro ao salvar: ' + error.message);
+                });
+        }
+
+        // Save Sections content
+        function saveSectionsContent() {
+            const updates = {
+                oque: document.getElementById('oqueText').value,
+                missao: document.getElementById('missaoText').value,
+                objetivo: document.getElementById('objetivoText').value,
+                valores: document.getElementById('valoresText').value
+            };
+
+            database.ref('content').update(updates)
+                .then(() => {
+                    const successMsg = document.getElementById('sectionsSuccess');
+                    successMsg.style.display = 'block';
+                    setTimeout(() => successMsg.style.display = 'none', 3000);
+                })
+                .catch((error) => {
+                    alert('Erro ao salvar: ' + error.message);
+                });
+        }
+
+        // Load comments for admin
+        function loadAdminComments() {
+            const commentsList = document.getElementById('adminCommentsList');
+            
+            database.ref('comments').orderByChild('timestamp').on('value', (snapshot) => {
+                commentsList.innerHTML = '';
+                const comments = [];
+                
+                snapshot.forEach((childSnapshot) => {
+                    comments.push({
+                        key: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                comments.reverse();
+
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<p style="text-align: center; color: #999;">Nenhum comentário ainda.</p>';
+                } else {
+                    comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'comment-item';
+                        
+                        const date = new Date(comment.timestamp);
+                        const dateStr = date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
+                        
+                        commentDiv.innerHTML = `
+                            <div class="comment-content">
+                                <div class="comment-email">${comment.email}</div>
+                                <div class="comment-text">${comment.comment}</div>
+                                <div class="comment-date">${dateStr}</div>
+                            </div>
+                            <button class="delete-btn" onclick="deleteComment('${comment.key}')">🗑️ Apagar</button>
+                        `;
+                        commentsList.appendChild(commentDiv);
+                    });
+                }
+            });
+        }
+
+        // Delete comment
+        function deleteComment(commentKey) {
+            if (confirm('Tem certeza que deseja apagar este comentário?')) {
+                database.ref('comments/' + commentKey).remove()
+                    .then(() => {
+                        alert('Comentário apagado com sucesso!');
+                    })
+                    .catch((error) => {
+                        alert('Erro ao apagar: ' + error.message);
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
