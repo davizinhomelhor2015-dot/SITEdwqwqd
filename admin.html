@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — Balcão para o Cidadão</title>
+    <title>Painel Administrativo - Balcão para o Cidadão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,391 +14,510 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-bg: #0a0a0f;
+            --secondary-bg: #111119;
+            --card-bg: rgba(20, 20, 40, 0.6);
+            --primary-purple: #6b46c1;
+            --primary-blue: #1e3a8a;
+            --accent-neon: #818cf8;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(129, 140, 248, 0.2);
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, #0f0f1a 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
         }
 
         /* Login Screen */
         .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .login-container h2 {
-            color: #667eea;
+        .login-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-title {
+            font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
+            margin-bottom: 40px;
+            color: var(--accent-neon);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: var(--text-primary);
             font-weight: 500;
         }
 
-        .form-group input {
+        .form-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e7ff;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .login-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-neon);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-blue) 100%);
+            color: white;
             border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
-        .login-btn:hover {
-            transform: scale(1.02);
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(129, 140, 248, 0.3);
         }
 
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
+        .error-msg {
+            color: var(--danger);
             text-align: center;
+            margin-top: 15px;
             display: none;
+        }
+
+        .error-msg.show {
+            display: block;
         }
 
         /* Admin Panel */
         .admin-panel {
             display: none;
-            max-width: 1200px;
+            padding: 30px 20px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .admin-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 40px;
             flex-wrap: wrap;
-        }
-
-        .admin-header h1 {
-            color: #667eea;
-            font-size: 2em;
-        }
-
-        .logout-btn {
-            background: #ff4757;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .back-btn {
-            background: #667eea;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 10px;
-            text-decoration: none;
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .admin-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .admin-section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .form-grid {
-            display: grid;
             gap: 20px;
         }
 
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e7ff;
+        .admin-title {
+            font-size: 2.5rem;
+            color: var(--accent-neon);
+        }
+
+        .logout-btn {
+            padding: 12px 30px;
+            background: var(--danger);
+            color: white;
+            border: none;
             border-radius: 10px;
-            font-size: 1em;
-            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-neon);
+            margin-bottom: 25px;
+        }
+
+        .editable-field {
+            margin-bottom: 25px;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .editable-input,
+        .editable-textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .editable-textarea {
             min-height: 100px;
             resize: vertical;
         }
 
-        .form-group textarea:focus {
+        .editable-input:focus,
+        .editable-textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--accent-neon);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .save-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             padding: 12px 30px;
+            background: var(--success);
+            color: white;
             border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            margin-top: 15px;
         }
 
         .save-btn:hover {
-            transform: scale(1.05);
+            background: #059669;
+            transform: translateY(-2px);
         }
 
-        .upload-area {
-            border: 2px dashed #667eea;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-bottom: 15px;
+        /* Image Management */
+        .image-upload {
+            margin-bottom: 30px;
         }
 
-        .upload-area:hover {
-            background: rgba(102, 126, 234, 0.05);
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
         }
 
-        .upload-area input[type="file"] {
+        .file-input {
             display: none;
         }
 
-        .preview-image {
-            max-width: 300px;
-            max-height: 200px;
-            margin-top: 15px;
+        .file-label {
+            display: block;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed var(--border-color);
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .comment-item {
-            background: rgba(102, 126, 234, 0.05);
-            padding: 15px;
+        .file-label:hover {
+            border-color: var(--accent-neon);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .upload-btn {
+            padding: 12px 30px;
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .upload-btn:hover {
+            background: #553c9a;
+            transform: translateY(-2px);
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .image-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
+            padding: 10px;
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+
+        .image-item:hover {
+            border-color: var(--accent-neon);
+            transform: scale(1.02);
+        }
+
+        .image-item.dragging {
+            opacity: 0.5;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .delete-img-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .delete-img-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Comments Management */
+        .comment-admin {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            gap: 20px;
         }
 
         .comment-content {
             flex: 1;
         }
 
-        .comment-email {
-            font-weight: bold;
-            color: #667eea;
+        .comment-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             margin-bottom: 5px;
+        }
+
+        .comment-email {
+            color: var(--accent-neon);
+            font-weight: 600;
         }
 
         .comment-text {
-            color: #555;
-            margin-bottom: 5px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-top: 10px;
         }
 
-        .comment-date {
-            font-size: 0.85em;
-            color: #999;
-        }
-
-        .delete-btn {
-            background: #ff4757;
+        .delete-comment-btn {
+            padding: 8px 20px;
+            background: var(--danger);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 6px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
-        .delete-btn:hover {
-            transform: scale(1.05);
+        .delete-comment-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
         }
 
         .success-message {
-            background: #d4edda;
-            color: #155724;
+            background: var(--success);
+            color: white;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-top: 15px;
+            text-align: center;
             display: none;
         }
 
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .admin-header {
-                text-align: center;
+            .login-box {
+                padding: 30px;
             }
 
-            .admin-header h1 {
-                font-size: 1.5em;
-                margin-bottom: 15px;
+            .section {
+                padding: 25px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .comment-admin {
+                flex-direction: column;
+            }
+
+            .images-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
     </style>
 </head>
 <body>
     <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <h2>🔐 Login Admin</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Usuário</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit" class="login-btn">Entrar</button>
-            <div class="error" id="loginError">Usuário ou senha incorretos!</div>
-        </form>
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h1 class="login-title">Painel Admin</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Usuário</label>
+                    <input type="text" id="username" class="form-input" placeholder="Digite o usuário" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" id="password" class="form-input" placeholder="Digite a senha" required>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+                <p class="error-msg" id="loginError">Usuário ou senha incorretos!</p>
+            </form>
+        </div>
     </div>
 
     <!-- Admin Panel -->
-    <div id="adminPanel" class="admin-panel">
+    <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
-            <h1>⚙️ Painel Administrativo</h1>
-            <div>
-                <a href="index.html" class="back-btn">🏠 Ver Site</a>
-                <button class="logout-btn" onclick="logout()">Sair</button>
-            </div>
+            <h1 class="admin-title">Painel Administrativo</h1>
+            <button class="logout-btn" id="logoutBtn">Sair</button>
         </div>
 
         <!-- Hero Section Editor -->
-        <div class="admin-section">
-            <h2>Hero Section</h2>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Logo</label>
-                    <div class="upload-area" onclick="document.getElementById('logoUpload').click()">
-                        <input type="file" id="logoUpload" accept="image/*" onchange="uploadImage('logo', this.files[0])">
-                        <p>📷 Clique para fazer upload da logo</p>
-                    </div>
-                    <img id="logoPreview" class="preview-image" style="display:none;">
-                </div>
-
-                <div class="form-group">
-                    <label for="heroTitle">Título Principal</label>
-                    <input type="text" id="heroTitle">
-                </div>
-
-                <div class="form-group">
-                    <label for="heroSubtitle">Subtítulo</label>
-                    <input type="text" id="heroSubtitle">
-                </div>
-
-                <div class="form-group">
-                    <label for="heroDescription">Descrição</label>
-                    <textarea id="heroDescription"></textarea>
-                </div>
-
-                <button class="save-btn" onclick="saveHeroContent()">💾 Salvar Hero Section</button>
-                <div class="success-message" id="heroSuccess">Salvo com sucesso! ✅</div>
+        <div class="section">
+            <h2 class="section-title">Hero Section</h2>
+            <div class="editable-field">
+                <label class="field-label">Título Principal</label>
+                <input type="text" class="editable-input" id="editHeroTitle" placeholder="Título">
             </div>
+            <div class="editable-field">
+                <label class="field-label">Subtítulo</label>
+                <input type="text" class="editable-input" id="editHeroSubtitle" placeholder="Subtítulo">
+            </div>
+            <div class="editable-field">
+                <label class="field-label">Descrição</label>
+                <textarea class="editable-textarea" id="editHeroDescription" placeholder="Descrição"></textarea>
+            </div>
+            <button class="save-btn" onclick="saveHeroContent()">Salvar Hero Section</button>
+            <div class="success-message" id="heroSuccess">Salvo com sucesso!</div>
         </div>
 
-        <!-- Sections Editor -->
-        <div class="admin-section">
-            <h2>Seções de Conteúdo</h2>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="oqueText">O que é</label>
-                    <textarea id="oqueText"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="missaoText">Missão</label>
-                    <textarea id="missaoText"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="objetivoText">Objetivo</label>
-                    <textarea id="objetivoText"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="valoresText">Valores</label>
-                    <textarea id="valoresText"></textarea>
-                </div>
-
-                <button class="save-btn" onclick="saveSectionsContent()">💾 Salvar Seções</button>
-                <div class="success-message" id="sectionsSuccess">Salvo com sucesso! ✅</div>
-            </div>
+        <!-- Cards Editor -->
+        <div class="section">
+            <h2 class="section-title">Cards Institucionais</h2>
+            <div id="cardsEditor"></div>
+            <button class="save-btn" onclick="saveCardsContent()">Salvar Cards</button>
+            <div class="success-message" id="cardsSuccess">Salvo com sucesso!</div>
         </div>
 
-        <!-- Comments Manager -->
-        <div class="admin-section">
-            <h2>Gerenciar Comentários</h2>
-            <div id="adminCommentsList">
-                <div class="loading">Carregando comentários...</div>
+        <!-- Contact Editor -->
+        <div class="section">
+            <h2 class="section-title">Contato</h2>
+            <div class="editable-field">
+                <label class="field-label">E-mail Institucional</label>
+                <input type="email" class="editable-input" id="editContactEmail" placeholder="email@instituicao.br">
             </div>
+            <button class="save-btn" onclick="saveContactContent()">Salvar Contato</button>
+            <div class="success-message" id="contactSuccess">Salvo com sucesso!</div>
+        </div>
+
+        <!-- Image Management -->
+        <div class="section">
+            <h2 class="section-title">Gerenciar Imagens</h2>
+            <div class="image-upload">
+                <div class="file-input-wrapper">
+                    <input type="file" id="imageFile" class="file-input" accept="image/*">
+                    <label for="imageFile" class="file-label">
+                        📁 Clique para selecionar uma imagem
+                    </label>
+                </div>
+                <button class="upload-btn" onclick="uploadImage()">Upload Imagem</button>
+            </div>
+            <div class="images-grid" id="imagesGrid"></div>
+        </div>
+
+        <!-- Comments Management -->
+        <div class="section">
+            <h2 class="section-title">Moderação de Comentários</h2>
+            <div id="commentsAdmin"></div>
         </div>
     </div>
 
-    <!-- Firebase -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
@@ -418,40 +540,41 @@
         const database = firebase.database();
         const storage = firebase.storage();
 
-        // Admin credentials
+        // Login credentials
         const ADMIN_USER = 'ADM';
-        const ADMIN_PASSWORD = 'BALCÃO2026';
+        const ADMIN_PASS = 'BALCÃO2026';
 
         // Check if already logged in
         if (sessionStorage.getItem('adminLoggedIn') === 'true') {
             showAdminPanel();
         }
 
-        // Login form
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('loginError');
-
-            if (username === ADMIN_USER && password === ADMIN_PASSWORD) {
+            
+            if (username === ADMIN_USER && password === ADMIN_PASS) {
                 sessionStorage.setItem('adminLoggedIn', 'true');
                 showAdminPanel();
             } else {
-                errorDiv.style.display = 'block';
+                document.getElementById('loginError').classList.add('show');
             }
         });
 
-        function showAdminPanel() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            loadAdminContent();
-            loadAdminComments();
-        }
-
-        function logout() {
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', () => {
             sessionStorage.removeItem('adminLoggedIn');
             location.reload();
+        });
+
+        function showAdminPanel() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadAdminContent();
+            loadImages();
+            loadCommentsAdmin();
         }
 
         // Load content for editing
@@ -459,146 +582,220 @@
             database.ref('content').once('value', (snapshot) => {
                 const content = snapshot.val() || {};
                 
-                document.getElementById('heroTitle').value = content.heroTitle || 'Balcão para o Cidadão';
-                document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Universidade Católica do Salvador';
-                document.getElementById('heroDescription').value = content.heroDescription || 'Um projeto de extensão universitária dedicado a promover o acesso à justiça e cidadania.';
-                document.getElementById('oqueText').value = content.oque || 'O Balcão para o Cidadão é um projeto de extensão...';
-                document.getElementById('missaoText').value = content.missao || 'Promover o acesso à justiça...';
-                document.getElementById('objetivoText').value = content.objetivo || 'Oferecer assistência jurídica...';
-                document.getElementById('valoresText').value = content.valores || 'Justiça social, ética...';
+                // Load Hero content
+                document.getElementById('editHeroTitle').value = content.heroTitle || 'Balcão para o Cidadão';
+                document.getElementById('editHeroSubtitle').value = content.heroSubtitle || 'UCSal - Atendimento e Ação Social';
+                document.getElementById('editHeroDescription').value = content.heroDescription || 'Uma iniciativa dedicada ao atendimento ao cidadão...';
                 
-                if (content.heroLogo) {
-                    document.getElementById('logoPreview').src = content.heroLogo;
-                    document.getElementById('logoPreview').style.display = 'block';
+                // Load Cards content
+                const cardsEditor = document.getElementById('cardsEditor');
+                const cardTitles = ['O que é', 'Missão', 'Objetivo', 'Valores'];
+                cardsEditor.innerHTML = '';
+                
+                for (let i = 1; i <= 4; i++) {
+                    cardsEditor.innerHTML += `
+                        <div class="editable-field">
+                            <label class="field-label">Card ${i}: ${cardTitles[i-1]}</label>
+                            <input type="text" class="editable-input" id="editCardTitle${i}" placeholder="Título" value="${content[`cardTitle${i}`] || cardTitles[i-1]}">
+                            <textarea class="editable-textarea" id="editCardContent${i}" placeholder="Conteúdo">${content[`cardContent${i}`] || ''}</textarea>
+                        </div>
+                    `;
                 }
+                
+                // Load Contact
+                document.getElementById('editContactEmail').value = content.contactEmail || 'balcao@ucsal.br';
             });
-        }
-
-        // Upload image to Firebase Storage
-        function uploadImage(type, file) {
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('logoPreview').src = e.target.result;
-                document.getElementById('logoPreview').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-
-            const storageRef = storage.ref('images/' + type + '_' + Date.now() + '_' + file.name);
-            const uploadTask = storageRef.put(file);
-
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload: ' + progress + '%');
-                },
-                (error) => {
-                    alert('Erro no upload: ' + error.message);
-                },
-                () => {
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        database.ref('content/heroLogo').set(downloadURL)
-                            .then(() => {
-                                alert('Logo atualizada com sucesso!');
-                            });
-                    });
-                }
-            );
         }
 
         // Save Hero content
         function saveHeroContent() {
-            const updates = {
-                heroTitle: document.getElementById('heroTitle').value,
-                heroSubtitle: document.getElementById('heroSubtitle').value,
-                heroDescription: document.getElementById('heroDescription').value
+            const data = {
+                heroTitle: document.getElementById('editHeroTitle').value,
+                heroSubtitle: document.getElementById('editHeroSubtitle').value,
+                heroDescription: document.getElementById('editHeroDescription').value
             };
-
-            database.ref('content').update(updates)
-                .then(() => {
-                    const successMsg = document.getElementById('heroSuccess');
-                    successMsg.style.display = 'block';
-                    setTimeout(() => successMsg.style.display = 'none', 3000);
-                })
-                .catch((error) => {
-                    alert('Erro ao salvar: ' + error.message);
-                });
+            
+            database.ref('content').update(data)
+                .then(() => showSuccess('heroSuccess'))
+                .catch(err => alert('Erro ao salvar: ' + err.message));
         }
 
-        // Save Sections content
-        function saveSectionsContent() {
-            const updates = {
-                oque: document.getElementById('oqueText').value,
-                missao: document.getElementById('missaoText').value,
-                objetivo: document.getElementById('objetivoText').value,
-                valores: document.getElementById('valoresText').value
-            };
+        // Save Cards content
+        function saveCardsContent() {
+            const data = {};
+            for (let i = 1; i <= 4; i++) {
+                data[`cardTitle${i}`] = document.getElementById(`editCardTitle${i}`).value;
+                data[`cardContent${i}`] = document.getElementById(`editCardContent${i}`).value;
+            }
+            
+            database.ref('content').update(data)
+                .then(() => showSuccess('cardsSuccess'))
+                .catch(err => alert('Erro ao salvar: ' + err.message));
+        }
 
-            database.ref('content').update(updates)
-                .then(() => {
-                    const successMsg = document.getElementById('sectionsSuccess');
-                    successMsg.style.display = 'block';
-                    setTimeout(() => successMsg.style.display = 'none', 3000);
-                })
-                .catch((error) => {
-                    alert('Erro ao salvar: ' + error.message);
+        // Save Contact content
+        function saveContactContent() {
+            const data = {
+                contactEmail: document.getElementById('editContactEmail').value
+            };
+            
+            database.ref('content').update(data)
+                .then(() => showSuccess('contactSuccess'))
+                .catch(err => alert('Erro ao salvar: ' + err.message));
+        }
+
+        // Show success message
+        function showSuccess(elementId) {
+            const el = document.getElementById(elementId);
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        // Upload image
+        async function uploadImage() {
+            const fileInput = document.getElementById('imageFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Por favor, selecione uma imagem');
+                return;
+            }
+            
+            const storageRef = storage.ref('images/' + Date.now() + '_' + file.name);
+            
+            try {
+                const snapshot = await storageRef.put(file);
+                const url = await snapshot.ref.getDownloadURL();
+                
+                await database.ref('images').push({
+                    url: url,
+                    name: file.name,
+                    timestamp: Date.now(),
+                    position: { x: 0, y: 0 }
                 });
+                
+                fileInput.value = '';
+                alert('Imagem enviada com sucesso!');
+                loadImages();
+            } catch (error) {
+                alert('Erro ao enviar imagem: ' + error.message);
+            }
+        }
+
+        // Load images
+        function loadImages() {
+            const imagesGrid = document.getElementById('imagesGrid');
+            database.ref('images').on('value', (snapshot) => {
+                imagesGrid.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const image = childSnapshot.val();
+                    const imageId = childSnapshot.key;
+                    
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'image-item';
+                    imageItem.draggable = true;
+                    imageItem.innerHTML = `
+                        <img src="${image.url}" alt="${image.name}">
+                        <button class="delete-img-btn" onclick="deleteImage('${imageId}', '${image.url}')">×</button>
+                    `;
+                    
+                    // Drag and drop functionality
+                    imageItem.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('imageId', imageId);
+                        imageItem.classList.add('dragging');
+                    });
+                    
+                    imageItem.addEventListener('dragend', () => {
+                        imageItem.classList.remove('dragging');
+                    });
+                    
+                    imagesGrid.appendChild(imageItem);
+                });
+            });
+        }
+
+        // Delete image
+        async function deleteImage(imageId, imageUrl) {
+            if (!confirm('Tem certeza que deseja excluir esta imagem?')) return;
+            
+            try {
+                // Delete from storage
+                const imageRef = storage.refFromURL(imageUrl);
+                await imageRef.delete();
+                
+                // Delete from database
+                await database.ref('images/' + imageId).remove();
+                
+                alert('Imagem excluída com sucesso!');
+            } catch (error) {
+                alert('Erro ao excluir imagem: ' + error.message);
+            }
         }
 
         // Load comments for admin
-        function loadAdminComments() {
-            const commentsList = document.getElementById('adminCommentsList');
-            
-            database.ref('comments').orderByChild('timestamp').on('value', (snapshot) => {
-                commentsList.innerHTML = '';
+        function loadCommentsAdmin() {
+            const commentsAdmin = document.getElementById('commentsAdmin');
+            database.ref('comments').on('value', (snapshot) => {
+                commentsAdmin.innerHTML = '';
                 const comments = [];
-                
                 snapshot.forEach((childSnapshot) => {
                     comments.push({
-                        key: childSnapshot.key,
+                        id: childSnapshot.key,
                         ...childSnapshot.val()
                     });
                 });
-
-                comments.reverse();
-
+                
+                comments.sort((a, b) => b.timestamp - a.timestamp);
+                
                 if (comments.length === 0) {
-                    commentsList.innerHTML = '<p style="text-align: center; color: #999;">Nenhum comentário ainda.</p>';
-                } else {
-                    comments.forEach(comment => {
-                        const commentDiv = document.createElement('div');
-                        commentDiv.className = 'comment-item';
-                        
-                        const date = new Date(comment.timestamp);
-                        const dateStr = date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
-                        
-                        commentDiv.innerHTML = `
-                            <div class="comment-content">
-                                <div class="comment-email">${comment.email}</div>
-                                <div class="comment-text">${comment.comment}</div>
-                                <div class="comment-date">${dateStr}</div>
-                            </div>
-                            <button class="delete-btn" onclick="deleteComment('${comment.key}')">🗑️ Apagar</button>
-                        `;
-                        commentsList.appendChild(commentDiv);
-                    });
+                    commentsAdmin.innerHTML = '<p style="color: var(--text-secondary);">Nenhum comentário ainda.</p>';
+                    return;
                 }
+                
+                comments.forEach(comment => {
+                    const date = new Date(comment.timestamp).toLocaleString('pt-BR');
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'comment-admin';
+                    commentEl.innerHTML = `
+                        <div class="comment-content">
+                            <div class="comment-meta">
+                                <span class="comment-email">${comment.email}</span>
+                                <span> • ${date}</span>
+                            </div>
+                            <div class="comment-text">${comment.message}</div>
+                        </div>
+                        <button class="delete-comment-btn" onclick="deleteComment('${comment.id}')">Excluir</button>
+                    `;
+                    commentsAdmin.appendChild(commentEl);
+                });
             });
         }
 
         // Delete comment
-        function deleteComment(commentKey) {
-            if (confirm('Tem certeza que deseja apagar este comentário?')) {
-                database.ref('comments/' + commentKey).remove()
-                    .then(() => {
-                        alert('Comentário apagado com sucesso!');
-                    })
-                    .catch((error) => {
-                        alert('Erro ao apagar: ' + error.message);
-                    });
+        async function deleteComment(commentId) {
+            if (!confirm('Tem certeza que deseja excluir este comentário?')) return;
+            
+            try {
+                await database.ref('comments/' + commentId).remove();
+                alert('Comentário excluído com sucesso!');
+            } catch (error) {
+                alert('Erro ao excluir comentário: ' + error.message);
             }
         }
+
+        // Drag and drop grid reordering
+        document.addEventListener('DOMContentLoaded', () => {
+            const imagesGrid = document.getElementById('imagesGrid');
+            
+            imagesGrid.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+            
+            imagesGrid.addEventListener('drop', (e) => {
+                e.preventDefault();
+                // Additional drag-drop logic can be added here for repositioning
+            });
+        });
     </script>
 </body>
 </html>
