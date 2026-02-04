@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balcão para o Cidadão — UCSal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-logo {
+            width: 300px;
+            max-width: 90%;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .hero-logo:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero h2 {
+            font-size: 1.8em;
+            color: #e0e7ff;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            font-size: 1.2em;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Cards Section */
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        /* Instagram Section */
+        .instagram-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .instagram-section h3 {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instagram-section p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .instagram-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(221, 42, 123, 0.3);
+        }
+
+        .instagram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(221, 42, 123, 0.5);
+        }
+
+        .qr-code {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Comments Section */
+        .comments-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-section h3 {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .comment-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .comments-list {
+            margin-top: 30px;
+        }
+
+        .comment-item {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .comment-email {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .comment-text {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .comment-date {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        /* Admin Button */
+        .admin-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 2px solid #667eea;
+        }
+
+        .admin-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .hero h2 {
+                font-size: 1.3em;
+            }
+
+            .hero-description {
+                font-size: 1em;
+            }
+
+            .sections {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <img id="heroLogo" class="hero-logo" src="https://customer-assets.emergentagent.com/job_b08715ae-8740-4bcb-803f-915d1ce2bc24/artifacts/kisdfyxl_BackgroundEraser_20251201_180107491.png" alt="Logo Balcão para o Cidadão">
+            <h1 id="heroTitle">Balcão para o Cidadão</h1>
+            <h2 id="heroSubtitle">Universidade Católica do Salvador</h2>
+            <p id="heroDescription" class="hero-description">Um projeto de extensão universitária dedicado a promover o acesso à justiça e cidadania, oferecendo atendimento gratuito e orientação jurídica à comunidade.</p>
+        </div>
+
+        <!-- Information Sections -->
+        <div class="sections">
+            <div class="card">
+                <h3>O que é</h3>
+                <p id="section-oque">O Balcão para o Cidadão é um projeto de extensão da UCSal que oferece atendimento jurídico gratuito, orientação sobre direitos e acesso à justiça para a população que mais precisa.</p>
+            </div>
+
+            <div class="card">
+                <h3>Missão</h3>
+                <p id="section-missao">Promover o acesso à justiça e à cidadania através da prestação de serviços jurídicos gratuitos, contribuindo para a formação acadêmica dos estudantes e o desenvolvimento social da comunidade.</p>
+            </div>
+
+            <div class="card">
+                <h3>Objetivo</h3>
+                <p id="section-objetivo">Oferecer assistência jurídica de qualidade, orientar cidadãos sobre seus direitos, mediar conflitos e promover a educação em direitos humanos e cidadania.</p>
+            </div>
+
+            <div class="card">
+                <h3>Valores</h3>
+                <p id="section-valores">Justiça social, ética, solidariedade, respeito à dignidade humana, compromisso com a comunidade e excelência no atendimento.</p>
+            </div>
+        </div>
+
+        <!-- Instagram Section -->
+        <div class="instagram-section">
+            <h3>Siga-nos no Instagram</h3>
+            <p>Acompanhe nossas ações e fique por dentro das novidades</p>
+            <a href="https://instagram.com/balcaoparaocidadao_" target="_blank" class="instagram-btn">@balcaoparaocidadao_</a>
+            <div class="qr-code">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://instagram.com/balcaoparaocidadao_" alt="QR Code Instagram">
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>Deixe seu comentário</h3>
+            <form id="commentForm" class="comment-form">
+                <div class="form-group">
+                    <label for="userEmail">E-mail *</label>
+                    <input type="email" id="userEmail" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="userComment">Comentário *</label>
+                    <textarea id="userComment" required placeholder="Deixe seu comentário aqui..."></textarea>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <button type="submit" class="submit-btn">Enviar Comentário</button>
+            </form>
+
+            <div class="comments-list" id="commentsList">
+                <div class="loading">Carregando comentários...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Button -->
+    <a href="admin.html" class="admin-btn">🔐 Login Admin</a>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdxd54oFM3eWH1duC5BTdJzjGGRDLMq-Q",
+            authDomain: "mary-cb817.firebaseapp.com",
+            databaseURL: "https://mary-cb817-default-rtdb.firebaseio.com",
+            projectId: "mary-cb817",
+            storageBucket: "mary-cb817.firebasestorage.app",
+            messagingSenderId: "887348832569",
+            appId: "1:887348832569:web:c6d9c32a1a1c402b8960e8",
+            measurementId: "G-86HWEH554E"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // Load content from Firebase
+        function loadContent() {
+            database.ref('content').once('value', (snapshot) => {
+                const content = snapshot.val();
+                if (content) {
+                    if (content.heroLogo) document.getElementById('heroLogo').src = content.heroLogo;
+                    if (content.heroTitle) document.getElementById('heroTitle').textContent = content.heroTitle;
+                    if (content.heroSubtitle) document.getElementById('heroSubtitle').textContent = content.heroSubtitle;
+                    if (content.heroDescription) document.getElementById('heroDescription').textContent = content.heroDescription;
+                    if (content.oque) document.getElementById('section-oque').textContent = content.oque;
+                    if (content.missao) document.getElementById('section-missao').textContent = content.missao;
+                    if (content.objetivo) document.getElementById('section-objetivo').textContent = content.objetivo;
+                    if (content.valores) document.getElementById('section-valores').textContent = content.valores;
+                }
+            });
+        }
+
+        // Load comments from Firebase
+        function loadComments() {
+            const commentsList = document.getElementById('commentsList');
+            
+            database.ref('comments').orderByChild('timestamp').on('value', (snapshot) => {
+                commentsList.innerHTML = '';
+                const comments = [];
+                
+                snapshot.forEach((childSnapshot) => {
+                    comments.push({
+                        key: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                // Reverse to show newest first
+                comments.reverse();
+
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<p style="text-align: center; color: #999;">Nenhum comentário ainda. Seja o primeiro!</p>';
+                } else {
+                    comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'comment-item';
+                        
+                        const date = new Date(comment.timestamp);
+                        const dateStr = date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
+                        
+                        commentDiv.innerHTML = `
+                            <div class="comment-email">${comment.email}</div>
+                            <div class="comment-text">${comment.comment}</div>
+                            <div class="comment-date">${dateStr}</div>
+                        `;
+                        commentsList.appendChild(commentDiv);
+                    });
+                }
+            });
+        }
+
+        // Submit comment
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('userEmail').value.trim();
+            const comment = document.getElementById('userComment').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Validate
+            if (!email) {
+                errorMessage.textContent = 'Por favor, insira seu e-mail.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            if (!comment) {
+                errorMessage.textContent = 'Por favor, escreva um comentário.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            errorMessage.style.display = 'none';
+            
+            // Save to Firebase
+            const newComment = {
+                email: email,
+                comment: comment,
+                timestamp: Date.now()
+            };
+            
+            database.ref('comments').push(newComment)
+                .then(() => {
+                    // Clear form
+                    document.getElementById('userEmail').value = '';
+                    document.getElementById('userComment').value = '';
+                    alert('Comentário enviado com sucesso!');
+                })
+                .catch((error) => {
+                    errorMessage.textContent = 'Erro ao enviar comentário. Tente novamente.';
+                    errorMessage.style.display = 'block';
+                    console.error('Error:', error);
+                });
+        });
+
+        // Initialize
+        loadContent();
+        loadComments();
+    </script>
+</body>
+</html>
