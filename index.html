@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balcão para o Cidadão — UCSal</title>
+    <meta name="description" content="Balcão para o Cidadão - UCSal. Atendimento ao cidadão, divulgação de ações sociais e comunicação com a comunidade.">
+    <title>Balcão para o Cidadão - UCSal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,396 +15,522 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-bg: #0a0a0f;
+            --secondary-bg: #111119;
+            --card-bg: rgba(20, 20, 40, 0.6);
+            --primary-purple: #6b46c1;
+            --primary-blue: #1e3a8a;
+            --accent-neon: #818cf8;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(129, 140, 248, 0.2);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, #0f0f1a 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
             min-height: 100vh;
-            color: #333;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
 
         /* Hero Section */
         .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(107, 70, 193, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .logo-container {
             margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .hero-logo {
-            width: 300px;
-            max-width: 90%;
-            height: auto;
+            position: relative;
+            z-index: 1;
             animation: float 3s ease-in-out infinite;
-            transition: transform 0.3s ease;
-            margin-bottom: 30px;
-        }
-
-        .hero-logo:hover {
-            transform: scale(1.05);
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
         }
 
-        .hero h1 {
-            font-size: 3em;
-            color: white;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        .logo {
+            max-width: 200px;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(129, 140, 248, 0.4));
+            transition: transform 0.3s ease, filter 0.3s ease;
         }
 
-        .hero h2 {
-            font-size: 1.8em;
-            color: #e0e7ff;
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 15px 40px rgba(129, 140, 248, 0.6));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
             margin-bottom: 20px;
-            font-weight: 300;
+            background: linear-gradient(135deg, var(--accent-neon) 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(129, 140, 248, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-weight: 400;
         }
 
         .hero-description {
-            font-size: 1.2em;
-            color: white;
-            max-width: 800px;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            color: var(--text-secondary);
+            max-width: 700px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.8;
         }
 
         /* Cards Section */
-        .sections {
+        .cards-section {
+            padding: 80px 20px;
+        }
+
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            margin-bottom: 40px;
+            margin-top: 40px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 35px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(129, 140, 248, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-neon);
+            box-shadow: 0 20px 60px rgba(129, 140, 248, 0.2);
         }
 
-        .card h3 {
-            font-size: 1.8em;
-            color: #667eea;
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent-neon);
+            font-weight: 600;
         }
 
-        .card p {
-            color: #555;
+        .card-content {
+            color: var(--text-secondary);
+            font-size: 1rem;
             line-height: 1.8;
-            font-size: 1.05em;
         }
 
         /* Instagram Section */
         .instagram-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
+            padding: 80px 20px;
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: rgba(107, 70, 193, 0.05);
         }
 
-        .instagram-section h3 {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .instagram-section p {
-            color: #666;
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
             margin-bottom: 20px;
-            font-size: 1.1em;
+            color: var(--accent-neon);
+        }
+
+        .instagram-content {
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .instagram-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .instagram-handle {
+            font-size: 1.5rem;
+            color: var(--accent-neon);
+            margin: 20px 0;
+            font-weight: 600;
         }
 
         .instagram-btn {
             display: inline-block;
-            background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
-            color: white;
             padding: 15px 40px;
-            border-radius: 50px;
+            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+            color: white;
             text-decoration: none;
-            font-size: 1.1em;
-            font-weight: bold;
-            margin: 20px 0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(221, 42, 123, 0.3);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(131, 58, 180, 0.3);
         }
 
         .instagram-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(221, 42, 123, 0.5);
-        }
-
-        .qr-code {
-            margin-top: 20px;
-            display: inline-block;
-            padding: 15px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(131, 58, 180, 0.5);
         }
 
         /* Comments Section */
         .comments-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .comments-section h3 {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 20px;
+            padding: 80px 20px;
         }
 
         .comment-form {
-            margin-bottom: 30px;
+            max-width: 700px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 35px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: var(--text-primary);
             font-weight: 500;
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-input,
+        .form-textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e7ff;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
-            font-size: 1em;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-input:focus,
+        .form-textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--accent-neon);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
         }
 
-        .form-group textarea {
-            min-height: 100px;
+        .form-textarea {
+            min-height: 120px;
             resize: vertical;
         }
 
         .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-blue) 100%);
             color: white;
-            padding: 12px 30px;
             border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .submit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(129, 140, 248, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .comments-list {
-            margin-top: 30px;
+            max-width: 900px;
+            margin: 50px auto 0;
         }
 
         .comment-item {
-            background: rgba(102, 126, 234, 0.05);
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .comment-item:hover {
+            border-color: var(--accent-neon);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
-            border-left: 4px solid #667eea;
         }
 
         .comment-email {
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 8px;
-        }
-
-        .comment-text {
-            color: #555;
-            line-height: 1.6;
+            color: var(--accent-neon);
+            font-weight: 500;
         }
 
         .comment-date {
-            font-size: 0.85em;
-            color: #999;
-            margin-top: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        /* Admin Button */
-        .admin-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
-            padding: 15px 25px;
-            border-radius: 50px;
+        .comment-message {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 60px 20px;
+            text-align: center;
+            background: rgba(30, 58, 138, 0.05);
+        }
+
+        .contact-email {
+            font-size: 1.3rem;
+            color: var(--accent-neon);
             text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            border: 2px solid #667eea;
         }
 
-        .admin-btn:hover {
-            background: #667eea;
-            color: white;
-            transform: scale(1.05);
+        .contact-email:hover {
+            color: #a78bfa;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            background: var(--secondary-bg);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2em;
+            .hero {
+                min-height: 60vh;
+                padding: 40px 20px;
             }
 
-            .hero h2 {
-                font-size: 1.3em;
+            .cards-section,
+            .instagram-section,
+            .comments-section {
+                padding: 50px 20px;
             }
 
-            .hero-description {
-                font-size: 1em;
-            }
-
-            .sections {
+            .cards-grid {
                 grid-template-columns: 1fr;
             }
 
-            .admin-btn {
-                bottom: 20px;
-                right: 20px;
-                padding: 12px 20px;
+            .card {
+                padding: 25px;
             }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-        }
-
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Hero Section -->
-        <div class="hero">
-            <img id="heroLogo" class="hero-logo" src="https://customer-assets.emergentagent.com/job_b08715ae-8740-4bcb-803f-915d1ce2bc24/artifacts/kisdfyxl_BackgroundEraser_20251201_180107491.png" alt="Logo Balcão para o Cidadão">
-            <h1 id="heroTitle">Balcão para o Cidadão</h1>
-            <h2 id="heroSubtitle">Universidade Católica do Salvador</h2>
-            <p id="heroDescription" class="hero-description">Um projeto de extensão universitária dedicado a promover o acesso à justiça e cidadania, oferecendo atendimento gratuito e orientação jurídica à comunidade.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="logo-container">
+            <img src="https://customer-assets.emergentagent.com/job_b08715ae-8740-4bcb-803f-915d1ce2bc24/artifacts/kisdfyxl_BackgroundEraser_20251201_180107491.png" alt="Balcão para o Cidadão Logo" class="logo" id="heroLogo">
         </div>
-
-        <!-- Information Sections -->
-        <div class="sections">
-            <div class="card">
-                <h3>O que é</h3>
-                <p id="section-oque">O Balcão para o Cidadão é um projeto de extensão da UCSal que oferece atendimento jurídico gratuito, orientação sobre direitos e acesso à justiça para a população que mais precisa.</p>
-            </div>
-
-            <div class="card">
-                <h3>Missão</h3>
-                <p id="section-missao">Promover o acesso à justiça e à cidadania através da prestação de serviços jurídicos gratuitos, contribuindo para a formação acadêmica dos estudantes e o desenvolvimento social da comunidade.</p>
-            </div>
-
-            <div class="card">
-                <h3>Objetivo</h3>
-                <p id="section-objetivo">Oferecer assistência jurídica de qualidade, orientar cidadãos sobre seus direitos, mediar conflitos e promover a educação em direitos humanos e cidadania.</p>
-            </div>
-
-            <div class="card">
-                <h3>Valores</h3>
-                <p id="section-valores">Justiça social, ética, solidariedade, respeito à dignidade humana, compromisso com a comunidade e excelência no atendimento.</p>
-            </div>
+        <div class="hero-content container">
+            <h1 class="hero-title" id="heroTitle">Balcão para o Cidadão</h1>
+            <h2 class="hero-subtitle" id="heroSubtitle">UCSal - Atendimento e Ação Social</h2>
+            <p class="hero-description" id="heroDescription">Uma iniciativa dedicada ao atendimento ao cidadão, divulgação de ações sociais e fortalecimento da comunicação com a comunidade. Juntos construímos uma sociedade mais justa e acessível.</p>
         </div>
+    </section>
 
-        <!-- Instagram Section -->
-        <div class="instagram-section">
-            <h3>Siga-nos no Instagram</h3>
-            <p>Acompanhe nossas ações e fique por dentro das novidades</p>
-            <a href="https://instagram.com/balcaoparaocidadao_" target="_blank" class="instagram-btn">@balcaoparaocidadao_</a>
-            <div class="qr-code">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://instagram.com/balcaoparaocidadao_" alt="QR Code Instagram">
+    <!-- Cards Section -->
+    <section class="cards-section">
+        <div class="container">
+            <div class="cards-grid" id="cardsContainer">
+                <div class="card">
+                    <h3 class="card-title" id="cardTitle1">O que é</h3>
+                    <p class="card-content" id="cardContent1">O Balcão para o Cidadão é um projeto de extensão universitária da UCSal que visa aproximar a universidade da comunidade, oferecendo atendimento gratuito e de qualidade, promovendo cidadania e acesso a direitos fundamentais.</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" id="cardTitle2">Missão</h3>
+                    <p class="card-content" id="cardContent2">Nossa missão é promover o acesso à informação, orientação e serviços essenciais aos cidadãos, fortalecendo vínculos comunitários e contribuindo para o desenvolvimento social através da atuação universitária responsável.</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" id="cardTitle3">Objetivo</h3>
+                    <p class="card-content" id="cardContent3">Oferecer atendimento multidisciplinar à comunidade, integrando conhecimento acadêmico e prática social, promovendo transformação através da educação, orientação jurídica, assistência social e ações de cidadania.</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" id="cardTitle4">Valores</h3>
+                    <p class="card-content" id="cardContent4">Transparência, respeito à dignidade humana, compromisso social, ética profissional, inclusão, acessibilidade e responsabilidade institucional são os pilares que guiam todas as nossas ações e serviços prestados.</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- Comments Section -->
-        <div class="comments-section">
-            <h3>Deixe seu comentário</h3>
-            <form id="commentForm" class="comment-form">
+    <!-- Instagram Section -->
+    <section class="instagram-section">
+        <div class="container">
+            <h2 class="section-title">Siga-nos no Instagram</h2>
+            <div class="instagram-content">
+                <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#instagram-gradient)">
+                    <defs>
+                        <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#833ab4;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#fd1d1d;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#fcb045;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                <p class="hero-description">Acompanhe nossas ações, eventos e novidades. Conecte-se com nossa comunidade e fique por dentro de todas as iniciativas do projeto.</p>
+                <div class="qr-code" id="qrCode"></div>
+                <p class="instagram-handle">@balcaoparaocidadao_</p>
+                <a href="https://instagram.com/balcaoparaocidadao_" target="_blank" class="instagram-btn">Visitar Perfil</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="comments-section">
+        <div class="container">
+            <h2 class="section-title">Deixe seu Comentário</h2>
+            <form class="comment-form" id="commentForm">
                 <div class="form-group">
-                    <label for="userEmail">E-mail *</label>
-                    <input type="email" id="userEmail" required placeholder="seu@email.com">
+                    <label for="commentEmail" class="form-label">E-mail *</label>
+                    <input type="email" id="commentEmail" class="form-input" placeholder="seu@email.com" required>
+                    <span class="error-message" id="emailError">Por favor, insira um e-mail válido.</span>
                 </div>
                 <div class="form-group">
-                    <label for="userComment">Comentário *</label>
-                    <textarea id="userComment" required placeholder="Deixe seu comentário aqui..."></textarea>
+                    <label for="commentMessage" class="form-label">Mensagem *</label>
+                    <textarea id="commentMessage" class="form-textarea" placeholder="Compartilhe sua opinião, sugestão ou experiência..." required></textarea>
+                    <span class="error-message" id="messageError">Por favor, escreva uma mensagem.</span>
                 </div>
-                <div class="error-message" id="errorMessage"></div>
-                <button type="submit" class="submit-btn">Enviar Comentário</button>
+                <button type="submit" class="submit-btn" id="submitBtn">Enviar Comentário</button>
             </form>
-
-            <div class="comments-list" id="commentsList">
-                <div class="loading">Carregando comentários...</div>
-            </div>
+            <div class="comments-list" id="commentsList"></div>
         </div>
-    </div>
+    </section>
 
-    <!-- Admin Button -->
-    <a href="admin.html" class="admin-btn">🔐 Login Admin</a>
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Contato</h2>
+            <a href="mailto:balcao@ucsal.br" class="contact-email" id="contactEmail">balcao@ucsal.br</a>
+        </div>
+    </section>
 
-    <!-- Firebase -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">© 2024 Balcão para o Cidadão - UCSal. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
     <script>
         // Firebase Configuration
@@ -420,19 +550,48 @@
         const database = firebase.database();
         const storage = firebase.storage();
 
-        // Load content from Firebase
+        // Generate QR Code
+        function generateQRCode() {
+            const qrContainer = document.getElementById('qrCode');
+            QRCode.toCanvas({
+                text: 'https://instagram.com/balcaoparaocidadao_',
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            }, function(error, canvas) {
+                if (error) {
+                    console.error('Erro ao gerar QR Code:', error);
+                    return;
+                }
+                qrContainer.innerHTML = '';
+                qrContainer.appendChild(canvas);
+            });
+        }
+
+        // Load editable content from Firebase
         function loadContent() {
             database.ref('content').once('value', (snapshot) => {
                 const content = snapshot.val();
                 if (content) {
-                    if (content.heroLogo) document.getElementById('heroLogo').src = content.heroLogo;
+                    // Hero Section
                     if (content.heroTitle) document.getElementById('heroTitle').textContent = content.heroTitle;
                     if (content.heroSubtitle) document.getElementById('heroSubtitle').textContent = content.heroSubtitle;
                     if (content.heroDescription) document.getElementById('heroDescription').textContent = content.heroDescription;
-                    if (content.oque) document.getElementById('section-oque').textContent = content.oque;
-                    if (content.missao) document.getElementById('section-missao').textContent = content.missao;
-                    if (content.objetivo) document.getElementById('section-objetivo').textContent = content.objetivo;
-                    if (content.valores) document.getElementById('section-valores').textContent = content.valores;
+                    
+                    // Cards
+                    for (let i = 1; i <= 4; i++) {
+                        if (content[`cardTitle${i}`]) document.getElementById(`cardTitle${i}`).textContent = content[`cardTitle${i}`];
+                        if (content[`cardContent${i}`]) document.getElementById(`cardContent${i}`).textContent = content[`cardContent${i}`];
+                    }
+                    
+                    // Contact
+                    if (content.contactEmail) {
+                        const emailEl = document.getElementById('contactEmail');
+                        emailEl.textContent = content.contactEmail;
+                        emailEl.href = `mailto:${content.contactEmail}`;
+                    }
                 }
             });
         }
@@ -440,89 +599,107 @@
         // Load comments from Firebase
         function loadComments() {
             const commentsList = document.getElementById('commentsList');
-            
             database.ref('comments').orderByChild('timestamp').on('value', (snapshot) => {
                 commentsList.innerHTML = '';
                 const comments = [];
-                
                 snapshot.forEach((childSnapshot) => {
                     comments.push({
-                        key: childSnapshot.key,
+                        id: childSnapshot.key,
                         ...childSnapshot.val()
                     });
                 });
-
-                // Reverse to show newest first
-                comments.reverse();
-
-                if (comments.length === 0) {
-                    commentsList.innerHTML = '<p style="text-align: center; color: #999;">Nenhum comentário ainda. Seja o primeiro!</p>';
-                } else {
-                    comments.forEach(comment => {
-                        const commentDiv = document.createElement('div');
-                        commentDiv.className = 'comment-item';
-                        
-                        const date = new Date(comment.timestamp);
-                        const dateStr = date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
-                        
-                        commentDiv.innerHTML = `
-                            <div class="comment-email">${comment.email}</div>
-                            <div class="comment-text">${comment.comment}</div>
-                            <div class="comment-date">${dateStr}</div>
-                        `;
-                        commentsList.appendChild(commentDiv);
-                    });
-                }
+                
+                // Sort by timestamp descending (newest first)
+                comments.sort((a, b) => b.timestamp - a.timestamp);
+                
+                comments.forEach(comment => {
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'comment-item';
+                    const date = new Date(comment.timestamp).toLocaleString('pt-BR');
+                    commentEl.innerHTML = `
+                        <div class="comment-header">
+                            <span class="comment-email">${comment.email}</span>
+                            <span class="comment-date">${date}</span>
+                        </div>
+                        <p class="comment-message">${comment.message}</p>
+                    `;
+                    commentsList.appendChild(commentEl);
+                });
             });
         }
 
-        // Submit comment
-        document.getElementById('commentForm').addEventListener('submit', function(e) {
+        // Validate email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Handle comment form submission
+        document.getElementById('commentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = document.getElementById('userEmail').value.trim();
-            const comment = document.getElementById('userComment').value.trim();
-            const errorMessage = document.getElementById('errorMessage');
+            const emailInput = document.getElementById('commentEmail');
+            const messageInput = document.getElementById('commentMessage');
+            const emailError = document.getElementById('emailError');
+            const messageError = document.getElementById('messageError');
+            const submitBtn = document.getElementById('submitBtn');
             
-            // Validate
-            if (!email) {
-                errorMessage.textContent = 'Por favor, insira seu e-mail.';
-                errorMessage.style.display = 'block';
-                return;
+            // Reset errors
+            emailError.classList.remove('show');
+            messageError.classList.remove('show');
+            
+            const email = emailInput.value.trim();
+            const message = messageInput.value.trim();
+            
+            let hasError = false;
+            
+            // Validate email
+            if (!email || !validateEmail(email)) {
+                emailError.classList.add('show');
+                hasError = true;
             }
             
-            if (!comment) {
-                errorMessage.textContent = 'Por favor, escreva um comentário.';
-                errorMessage.style.display = 'block';
-                return;
+            // Validate message
+            if (!message) {
+                messageError.classList.add('show');
+                hasError = true;
             }
             
-            errorMessage.style.display = 'none';
+            if (hasError) return;
             
-            // Save to Firebase
-            const newComment = {
-                email: email,
-                comment: comment,
-                timestamp: Date.now()
-            };
+            // Disable button while submitting
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
             
-            database.ref('comments').push(newComment)
-                .then(() => {
-                    // Clear form
-                    document.getElementById('userEmail').value = '';
-                    document.getElementById('userComment').value = '';
-                    alert('Comentário enviado com sucesso!');
-                })
-                .catch((error) => {
-                    errorMessage.textContent = 'Erro ao enviar comentário. Tente novamente.';
-                    errorMessage.style.display = 'block';
-                    console.error('Error:', error);
+            try {
+                // Save to Firebase
+                await database.ref('comments').push({
+                    email: email,
+                    message: message,
+                    timestamp: Date.now()
                 });
+                
+                // Clear form
+                emailInput.value = '';
+                messageInput.value = '';
+                
+                // Show success message
+                alert('Comentário enviado com sucesso!');
+            } catch (error) {
+                console.error('Erro ao enviar comentário:', error);
+                alert('Erro ao enviar comentário. Por favor, tente novamente.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Comentário';
+            }
         });
 
-        // Initialize
-        loadContent();
-        loadComments();
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            generateQRCode();
+            loadContent();
+            loadComments();
+        });
     </script>
 </body>
 </html>
